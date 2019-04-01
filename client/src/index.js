@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from "react-router-dom";
+import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux';
-import store from './redux/store';
+import store, { history } from './redux/store';
 
 import './resources/css/styles.css';
 import Routes from './routes';
@@ -11,8 +11,8 @@ import Routes from './routes';
 
 ReactDOM.render(
   <Provider store={store}>
-    <BrowserRouter>
-      <Routes /> 
-    </BrowserRouter>
+    <ConnectedRouter history={history}> 
+        <Routes /> 
+      </ConnectedRouter>
   </Provider>,
 document.getElementById('root'));

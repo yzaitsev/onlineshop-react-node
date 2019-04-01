@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
+import { connectRouter } from 'connected-react-router';
 import userReducer, { moduleName as userModule } from '../ducks/user';
 
 
-const rootReducer = combineReducers({
+export default (history) => combineReducers({
+  router: connectRouter(history),
   [userModule]: userReducer
 })
-
-export default rootReducer;

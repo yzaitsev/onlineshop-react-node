@@ -1,8 +1,6 @@
 import React from 'react';
 
 const Formfield = ({formdata, change, id}) => {
-
-
     const showError = () => {
         let errorMessage = null;
 
