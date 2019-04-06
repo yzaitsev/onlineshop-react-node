@@ -3,8 +3,9 @@ import FormField from '../utils/Form/formfield';
 import { update, generateData, isFormValid } from '../utils/Form/formActions';
 import Dialog from '@material-ui/core/Dialog';
 
+import { register, moduleName } from '../../ducks/user';
 import { connect } from 'react-redux';
-import { registerUser } from '../../actions/user_actions';
+
 
 class Register extends Component {
 
@@ -100,29 +101,16 @@ class Register extends Component {
         })
     }
 
-    submitForm= (event) =>{
+    submitForm= (event) => {
         event.preventDefault();
         
         let dataToSubmit = generateData(this.state.formdata,'register');
-        let formIsValid = isFormValid(this.state.formdata,'register')
+        let formIsValid = isFormValid(this.state.formdata,'register');
+        console.log(dataToSubmit);
 
-        if(formIsValid){
-            this.props.dispatch(registerUser(dataToSubmit))
-            .then(response =>{ 
-                if(response.payload.success){
-                    this.setState({
-                        formError: false,
-                        formSuccess: true
-                    });
-                    setTimeout(()=>{
-                        this.props.history.push('/register_login');
-                    },3000)
-                } else {
-                    this.setState({formError: true})
-                }
-            }).catch(e => {
-                this.setState({formError: true})
-            })
+        if (formIsValid) {
+            this.props.register(dataToSubmit);
+
         } else {
             this.setState({
                 formError: true
@@ -179,7 +167,7 @@ class Register extends Component {
                                     </div>
                                 </div>
                                 <div>
-                                    { this.state.formError ?
+                                    { this.state.formError || this.props.error ?
                                         <div className="error_label">
                                             Please check your data
                                         </div>
@@ -193,7 +181,7 @@ class Register extends Component {
                     </div>
                 </div>     
 
-                <Dialog open={this.state.formSuccess}>
+                <Dialog open={this.props.registred}>
                     <div className="dialog_alert">
                         <div>Congratulations !!</div>
                         <div>
@@ -208,4 +196,7 @@ class Register extends Component {
     }
 }
 
-export default connect()(Register);
+export default connect( state => ({
+    registred: state[moduleName].registred,
+    error: state[moduleName].error,
+}), { register })(Register);
